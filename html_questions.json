@@ -1,0 +1,90 @@
+[
+    {
+      "title":"why we use <br> Element",
+      "answer_1":"To make text bold",
+      "answer_2":"To make text italic",
+      "answer_3":"To make break line",
+      "answer_4":"To make horizontal line",
+      "right_answer":"To make break line"
+    },
+    {
+        "title":"Is <img> Element has attribute href",
+        "answer_1":"yes",
+        "answer_2":"No,its for anchor tag <a>",
+        "answer_3":"All answers has this attribute",
+        "answer_4":"answer 1 and 3 are true",
+        "right_answer":"No,its for anchor tag <a>"
+    }
+    ,
+    {
+        "title":"What does HTML stands for",
+        "answer_1":"Hyper text markup language",
+        "answer_2":"Home tool markup language",
+        "answer_3":"Hyper language",
+        "answer_4":"hyper linl",
+        "right_answer":"Hyper text markup language"
+    }
+    ,
+    {
+        "title":"Who is making the Web standards",
+        "answer_1":"The World Wide Web Consortium",
+        "answer_2":"Google",
+        "answer_3":"Mozilla",
+        "answer_4":"Obera",
+        "right_answer":"The World Wide Web Consortium"
+    }
+    ,
+    {
+        "title":"Choose the correct HTML element for the largest heading:",
+        "answer_1":"heading",
+        "answer_2":"<h1>",
+        "answer_3":"<h6>",
+        "answer_4":"head",
+        "right_answer":"<h1>"
+    }
+    ,
+    {
+        "title":"What is the correct HTML element for inserting a line break",
+        "answer_1":"<br>",
+        "answer_2":"<hr>",
+        "answer_3":"<break>",
+        "answer_4":"<nl>",
+        "right_answer":"<br>"
+    }
+    ,
+    {
+        "title":"What is the correct HTML for adding a background color",
+        "answer_1":"<background>yellow<background>",
+        "answer_2":"<body bg='red'>",
+        "answer_3":"<bg>",
+        "answer_4":"<bckground_color>",
+        "right_answer":"<body bg='red'>"
+    }
+    ,
+    {
+        "title":"Choose the correct HTML element to define emphasized text",
+        "answer_1":"<emp>",
+        "answer_2":"<e>",
+        "answer_3":"<i>",
+        "answer_4":"<em>",
+        "right_answer":"<em>"
+    }
+    ,
+    {
+        "title":"Which character is used to indicate an end tag",
+        "answer_1":"*",
+        "answer_2":"^",
+        "answer_3":">",
+        "answer_4":"/",
+        "right_answer":"/"
+    }
+    ,
+    {
+        "title":"Which of these elements are all <table> elements?",
+        "answer_1":"<table><br>",
+        "answer_2":"<table><body>",
+        "answer_3":"<table><tr><td>",
+        "answer_4":"<head><table>",
+        "right_answer":"<table><tr><td>"
+    }
+]

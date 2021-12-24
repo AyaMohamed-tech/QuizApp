@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+         form{
+          font-family: 'Gill Sans', 'Gill Sans MT','Trebuchet MS', sans-serif;
+          width: 500px;
+          height: 320px;
+          padding: 20px;
+          margin: auto;
+          background-color: rgb(226, 239, 243);
+          box-shadow:3px 3px 3px lightblue;
+      }
+      input[type="text"],input[type="password"],input[type="email"]{
+          width: 300px;
+          height: 30px;
+          /*border: 1px solid blue;*/
+      }
+      input[type="text"],input[type="password"],input[type="email"]:focus{
+          outline: none;
+      } 
+      input[type="button"],input[type="reset"]{
+          width: 150px;
+          height: 35px;
+          color: red;
+          box-shadow: 3px 3px 3px lightblue;
+          border-radius: 5px;
+      }
+      input[type="button"]:hover{
+          background-color: rgb(103, 217, 246);;
+      }
+      input[type="reset"]:hover{
+          background-color: rgb(103, 217, 246);;
+      }
+      #cancel{
+          float: right;
+      }
+      span{
+          display: none;
+      }
+      .error{
+          border: 3px solid red;
+      }
+      .success{
+          border: 3px solid green;
+      }
+    </style>
+    <script>
+        window.addEventListener('load',function(){
+           //select
+           userName = document.getElementById('username');
+           userpass = document.getElementById('Upassword');
+           submitBtn = document.getElementById('submit');
+           //Select errorMSG
+           usernameError = this.document.getElementById('nameError');
+           userpassError = this.document.getElementById('passError');
+           invalid = this.document.getElementById('invalid');
+           //events
+           userName.addEventListener('blur',function(){
+                 if(userName.value == ""){
+                    userName.focus();
+                    usernameError.style.display = "block";
+                    userName.className = "error";
+                 }else{
+                    usernameError.style.display = "none";
+                    userName.className = "success";
+                 }
+            });//end username validate
+
+            userpass.addEventListener('blur',function(){
+                 if(userpass.value==""){
+                    userpass.focus();
+                    userpassError.style.display="block";
+                    userpass.className="error"; 
+                 }else{
+                    userpassError.style.display="none";
+                    userpass.className="success";
+                 }
+            });//end password validate
+
+            //handel submit
+            submitBtn.addEventListener('click',function(){
+             var validUser = localStorage.getItem("UserName");
+             var validPass = localStorage.getItem("Userpass");
+
+             if(userName.value == validUser && userpass.value == validPass){
+                open("Quiz.html");
+                invalid.style.display="none";
+             }else{
+                invalid.style.display="block";
+                userName.className="error";
+                userpass.className="error";
+
+             }
+            });//end submit
+        });
+    </script>
+</head>
+<body>
+    <form action="" method="GET">
+        <table cellspacing="10" cellpadding="10">
+            <tr>
+                <td rowspan="2"><caption>Login Page</caption></td>
+            </tr>
+            <tr>
+                <td>User Name</td>
+                <td><input type="text" id="username"></td>
+            </tr>
+             <!--error message for user name -->
+             <tr>
+                <td colspan="2" align="center" ><span id="nameError">User Name can not be Empty</span></td>
+            </tr>
+            <!--End error message for user name -->
+            <tr>
+                <td>User password</td>
+                <td><input type="password" id="Upassword"></td>
+            </tr>
+            <!--error message for password -->
+            <tr>
+                <td colspan="2" align="center" ><span id="passError">PassWord can not be Empty</span></td>
+            </tr>
+            <!--End error message for password -->
+            <tr>
+                <td colspan="2" align="center" ><span id="invalid">Invalid username or Invalid password !!</span></td>
+            </tr>
+        </table>
+        <input type="button" value="Ok" id="submit">
+        <input type="button" value="Cancel" id="cancel">
+    </form>
+</body>
+</html>

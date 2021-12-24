@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        form {
+            font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+            width: 500px;
+            height: 315px;
+            padding: 20px;
+            margin: auto;
+            background-color: rgb(226, 239, 243);
+            box-shadow: 3px 3px 3px lightblue;
+        }
+
+        table td {
+
+            width: 150px;
+            text-align: center;
+            color: red;
+            box-shadow: 3px 3px 3px lightblue;
+            border-radius: 5px;
+        }
+
+        .Q {
+            width: 480px;
+            height: 180px;
+            background-color: rgb(65, 220, 225);
+            padding: 10px;
+            box-shadow: 3px 3px 3px lightblue;
+            border-radius: 5px;
+
+        }
+
+        input[type="button"] {
+            width: 150px;
+            height: 35px;
+            color: white;
+            margin-top: 10px;
+            float: right;
+            background-color: rgb(67, 191, 233);
+            box-shadow: 3px 3px 3px lightblue;
+            border-radius: 5px;
+
+        }
+
+        input[type="button"]:hover {
+            background-color: rgb(103, 217, 246);
+        }
+
+        #finish {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form action="" method="GET" id="form">
+        <table cellspacing="10" cellpadding="10">
+            <tr id="tableTr">
+                <td><span id="welcome"></span></td>
+                <td>HTML Quiz</td>
+                <td><span id="m"></span>
+                    <span>:</span>
+                    <span id="s"></span>
+                </td>
+            </tr>
+        </table>
+        <div class="Q">
+            <div class="quiz-area">
+
+            </div>
+            <div class="answers-area">
+
+            </div>
+            <div id="results"></div>
+        </div>
+        <input type="button" value="Next" id="next">
+        <input type="button" value="Finish" id="finish">
+
+
+    </form>
+
+
+
+    <script>
+        //select
+        finish = document.querySelector('#finish');
+        next = document.querySelector('#next');
+        welcome = document.getElementById('welcome');
+        myform = document.getElementById('form');
+
+        //welcome username
+        welcome.innerHTML = "welcome : " + localStorage.getItem("UserName");
+
+        // background color
+
+
+        //timer
+          var s = 60;
+          var m = 29;
+        
+        var time = setInterval(function () { timer() }, 1000);
+
+        function timer() {
+            s--;
+            if (s == -1) {
+                m--;
+                s = 59;
+                
+                if (m == -1) {
+                    m = 0;
+                    s = 0;
+                    clearInterval(time);
+
+                    quizArea.remove();
+                    answersArea.remove();
+                    nextButton.remove();
+                    tabTr.remove();
+                    finish.remove();
+
+                    document.getElementById('form').innerText = "Time Off  !!";
+                }
+            }
+            document.getElementById('m').innerHTML = m < 10 ? `0${m}` : m;
+            document.getElementById('s').innerHTML = s < 10 ? `0${s}` : s;
+        }//end timer
+
+        //AJAX
+
+        let quizArea = document.querySelector(".quiz-area");
+        let answersArea = document.querySelector(".answers-area");
+        let nextButton = document.getElementById('next');
+        let resultsContainer = document.querySelector('#results');
+        let tabTr = document.querySelector('#tableTr');
+
+        //options
+        let currentIndex = 0;
+        let rightAnswers = 0;
+
+        function getQuestions() {
+            let myRequest = new XMLHttpRequest();
+
+            myRequest.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+
+                    let questionObject = JSON.parse(this.responseText);
+                    let qCount = questionObject.length;
+                    //console.log(questionObject);
+                    addQuestionData(questionObject[currentIndex], qCount);
+
+                    nextButton.onclick = () => {
+
+                        //Get right answer
+                        let theRightAnswer = questionObject[currentIndex].right_answer;
+
+                        //increase index
+                        currentIndex++;
+
+                        //check the answer
+                        checkAnswer(theRightAnswer, qCount)
+
+                        //remove previous question 
+
+                        quizArea.innerHTML = "";
+                        answersArea.innerHTML = "";
+                        //Add question Data
+                        addQuestionData(questionObject[currentIndex], qCount);
+
+                        // show results
+                        showResults(qCount);
+
+                    };
+
+                    //start finish btn
+
+                    finish.onclick = () => {
+
+                        //Get right answer
+                        let theRightAnswer = questionObject[currentIndex].right_answer;
+
+                        //increase index
+                        currentIndex++;
+
+                        //check the answer
+                        checkAnswer(theRightAnswer, qCount)
+
+                        //remove previous question 
+
+                        quizArea.innerHTML = "";
+                        answersArea.innerHTML = "";
+                        //Add question Data
+                        addQuestionData(questionObject[currentIndex], qCount);
+
+                        // show results
+                        showResults(qCount);
+
+                    };
+
+                    //end finish btn
+
+
+                }
+            };
+            //myRequest.open("GET","https://localhost/html_questions.json",true);
+            myRequest.open("GET", "html_questions.json", true);
+
+            myRequest.send();
+        }
+        getQuestions();
+
+        function addQuestionData(obj, count) {
+            if (currentIndex < count) {
+                let questionTitle = document.createElement("h2");
+                let questionText = document.createTextNode(obj['title']);
+                questionTitle.appendChild(questionText);
+                quizArea.appendChild(questionTitle);
+
+                for (let i = 1; i <= 4; i++) {
+                    let mainDiv = document.createElement("div");
+                    mainDiv.className = 'answer';
+                    let radioInput = document.createElement("input");
+                    radioInput.name = 'question';
+                    radioInput.type = 'radio';
+                    radioInput.id = `answer_${i}`;
+                    radioInput.dataset.answer = obj[`answer_${i}`];
+
+                    let theLabel = document.createElement("label");
+                    theLabel.htmlFor = `answer_${i}`;
+
+                    theLabelText = document.createTextNode(obj[`answer_${i}`]);
+                    theLabel.appendChild(theLabelText);
+                    mainDiv.appendChild(radioInput);
+                    mainDiv.appendChild(theLabel);
+                    answersArea.appendChild(mainDiv);
+                }
+            }
+
+        }
+
+        function checkAnswer(rAnswer, count) {
+            let answers = document.getElementsByName("question");
+            let theChoosenAnswer;
+
+            for (let i = 0; i < answers.length; i++) {
+                if (answers[i].checked) {
+                    theChoosenAnswer = answers[i].dataset.answer;
+                }
+            }
+
+            if (rAnswer === theChoosenAnswer) {
+                rightAnswers++;
+
+            }
+        }
+
+        function showResults(count) {
+            let theResults;
+            if (currentIndex === count) {
+                quizArea.remove();
+                answersArea.remove();
+                nextButton.remove();
+                tabTr.remove();
+                finish.remove();
+
+                if (rightAnswers > (count / 2) && rightAnswers < count) {
+                    theResults = `<span class="good">Good Jop</span> , ${rightAnswers} From ${count}`;
+                } else if (rightAnswers === count) {
+                    theResults = `<span class="perfect"> Perfect </span> , ${rightAnswers} From ${count}`;
+                } else {
+                    theResults = `<span class="bad">Hmmm, Try again PLZ. </span>, ${rightAnswers} From ${count}`;
+
+                }
+                resultsContainer.innerHTML = theResults;
+                resultsContainer.style.padding = "10px";
+                resultsContainer.style.marginTop = "50px";
+                resultsContainer.style.textAlign = "center";
+                resultsContainer.style.border = "1px solid green";
+                resultsContainer.style.backgroundColor = "lightgreen";
+                resultsContainer.style.boxShadow = "4px 4px 4px  green";
+                resultsContainer.style.borderRadius = "5px";
+            } else if (currentIndex === count - 1) {
+                finish.style.display = "block";
+                nextButton.style.display = "none";
+
+            }
+        }
+
+    </script>
+</body>
+
+</html>

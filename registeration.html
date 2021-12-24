@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+      form{
+          font-family: 'Gill Sans', 'Gill Sans MT','Trebuchet MS', sans-serif;
+          /*border: 1px solid blue;*/
+          width: 500px;
+          height: 600px;
+          padding: 20px;
+          margin: auto;
+          background-color: rgb(226, 239, 243);
+          box-shadow:3px 3px 3px lightblue;
+      }
+      input[type="text"],input[type="password"],input[type="email"]{
+          width: 300px;
+          height: 30px;
+          /*border: 1px solid blue;*/
+      }
+       input[type="text"],input[type="password"],input[type="email"]:focus{
+          outline: none;
+      } 
+      input[type="button"],input[type="reset"]{
+          width: 150px;
+          height: 35px;
+          color: red;
+          box-shadow: 3px 3px 3px lightblue;
+          border-radius: 5px;
+      }
+      input[type="button"]:hover{
+          background-color: rgb(103, 217, 246);;
+      }
+      input[type="reset"]:hover{
+          background-color: rgb(103, 217, 246);;
+      }
+      #cancel{
+          float: right;
+      }
+      span{
+          display: none;
+      }
+      .error{
+          border: 3px solid red;
+      }
+      .success{
+          border: 3px solid green;
+      }
+    </style>
+    <script>
+        window.addEventListener('load',function(){
+            //select inputs
+            usernameinput = document.getElementById('username');
+            userpassinput = document.getElementById('pass');
+            passconfirminput = document.getElementById('passconfirm');
+            emailinput = document.getElementById('email');
+            genderM = document.getElementById('M');
+            genderF = document.getElementById('F');
+            submitBtn = document.getElementById('submit');
+            //error messages
+            usernameError = this.document.getElementById('nameError');
+            userpassError = this.document.getElementById('passError');
+            passErrorConfirm = this.document.getElementById('passconfirmError');
+            emailError = this.document.getElementById('emailerror');
+            gendError = this.document.getElementById('genderError');
+            //events
+            usernameinput.addEventListener('blur',function(){
+                 if(usernameinput.value == ""){
+                    usernameinput.focus();
+                    usernameError.style.display = "block";
+                    usernameinput.className = "error";
+                 }else{
+                    usernameError.style.display = "none";
+                    usernameinput.className = "success";
+                 }
+            });//end username validate 
+
+            userpassinput.addEventListener('blur',function(){
+                 if(userpassinput.value==""){
+                    userpassinput.focus();
+                    userpassError.style.display="block";
+                    userpassinput.className="error"; 
+                 }else{
+                    userpassError.style.display="none";
+                    userpassinput.className="success";
+                 }
+            });//end password validate
+              
+            passconfirminput.addEventListener('blur',function(){
+                  if(passconfirminput.value == userpassinput.value){
+                    passconfirminput.className = "success";
+                    passErrorConfirm.style.display = "none";
+                  }else{
+                    passErrorConfirm.style.display = "block";
+                    passconfirminput.className = "error"; 
+                  }
+            });//end password confirmation validate
+            emailinput.addEventListener('blur',function(){
+               if(!isemailvalid()){
+                emailinput.focus();
+                emailinput.select();
+                emailError.style.display = "block";
+                emailinput.className = "error";
+               }else{
+                emailError.style.display = "none";
+                emailinput.className = "success";
+               }
+            });//end email validate
+            this.document.forms[0].addEventListener('click',function(e){
+              if(!(genderM.checked || genderF.checked)){
+                  e.preventDefault();
+                  gendError.style.display = "block";
+                  gendError.className="error";
+              }else{
+                gendError.style.display = "none";
+              }
+            });//end Submit
+
+            //submit local storage
+            submitBtn.addEventListener('click',function(){
+             login = open("Login.html","_blank");
+
+             var name = usernameinput.value;
+             localStorage.setItem("UserName",name);
+             var pass = userpassinput.value;
+             localStorage.setItem("Userpass",pass);
+             
+             
+             if(genderM.checked){
+                  localStorage.setItem("male",true);
+                  localStorage.setItem("female",false);
+             }else if(genderF.checked){
+                  localStorage.setItem("female",true);
+                  localStorage.setItem("male",false);
+             }
+            });//----------end local storage
+            
+        this.document.forms[0].addEventListener('reset', function (e) {
+            if (!confirm('Are you sure you want to reset ?')) {
+                e.preventDefault();
+            }
+        }); //end of reset
+            function isemailvalid(){
+                var emailregex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9-]{2,6}$/;
+                if(emailinput.value.match(emailregex)){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        });//End Load
+    </script>
+</head>
+<body>
+    <form action="Login.html" method="GET">       
+        <table cellspacing="10" cellpadding="10">
+            <tr>
+                <td rowspan="2"><caption >Registration Page</caption></td>
+            </tr>
+            <tr>
+                <td>User Name</td>
+                <td><input type="text" id="username"></td> 
+            </tr>
+            <!--error message for user name -->
+            <tr>
+                <td colspan="2" align="center" ><span id="nameError">User Name can not be Empty</span></td>
+            </tr>
+            <!--End error message for user name -->
+            <tr>
+                <td>User password</td>
+                <td><input type="password" id="pass"></td> 
+            </tr>
+            <!--error message for password -->
+            <tr>
+                <td colspan="2" align="center" ><span id="passError">PassWord can not be Empty</span></td>
+            </tr>
+            <!--End error message for password -->
+            <tr>
+                <td>password confirmation</td>
+                <td><input type="password" id="passconfirm"></td> 
+            </tr>
+            <!--error message for password confirmtion-->
+            <tr>
+                <td colspan="2" align="center" ><span id="passconfirmError">PassWords must be identical</span></td>
+            </tr>
+            <!--End error message for password confirmtion -->
+            <tr>
+                <td>Email</td>
+                <td><input type="email" id="email"></td> 
+            </tr>
+            <!--error message for email -->
+            <tr>   
+                    <td colspan="2" align="center" ><span id="emailerror">Not valid Email</span></td>
+            </tr>
+            <!--end error message for email -->
+            <tr>
+                <td>Gender</td>
+                <td>
+                    <input type="radio" name="gender" id="M">Male
+                    <input type="radio" name="gender" id="F">Female
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center" ><span id="genderError">Choose Gender Plz.</span></td>
+            </tr>
+        </table>
+        <input type="button" value="Ok" id="submit">
+        <input type="reset" value="Cancel" id="cancel">
+    </form>
+</body>
+</html>
